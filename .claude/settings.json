@@ -1,10 +1,5 @@
 {
   "enabledPlugins": {
     "expo@claude-plugins-official": true
-  },
-  "permissions": {
-    "allow": [
-      "PowerShell($conn = Get-NetTCPConnection -LocalPort 8099 -State Listen -ErrorAction SilentlyContinue; if \\($conn\\) { Stop-Process -Id $conn[0].OwningProcess -Force; Write-Output \"stopped\" } else { Write-Output \"no listener\" })"
-    ]
   }
 }
