@@ -1,7 +1,16 @@
 {
-  "actions": {
-    "continue": "Dalej",
-    "cancel": "Anuluj",
-    "save": "Zapisz"
+  "recipeList": {
+    "title": "Cook Book",
+    "searchPlaceholder": "Szukaj przepisu...",
+    "cardMeta": "{{totalTime}} min · {{difficulty}}"
+  },
+  "recipeDetails": {
+    "title": "Przepis",
+    "meta": "{{totalTime}} min · {{difficulty}} · {{servings}} porcje · {{calories}} kcal/porcję",
+    "ingredients": "Składniki",
+    "instructions": "Przygotowanie"
+  },
+  "errors": {
+    "retry": "Spróbuj ponownie"
   }
 }

@@ -1,6 +1,7 @@
-import Constants from 'expo-constants';
 import axios from 'axios';
 
+export const RECIPES_BASE_URL = 'https://dummyjson.com';
+
 export const axiosClient = axios.create({
-  baseURL: Constants.expoConfig?.extra?.API_URL,
+  baseURL: RECIPES_BASE_URL,
 });

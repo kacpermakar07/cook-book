@@ -11,7 +11,7 @@ export default function RootLayout() {
     <AppProviders>
       <SafeAreaProvider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack screenOptions={{ headerShown: false }} />
+          <Stack />
         </ThemeProvider>
       </SafeAreaProvider>
     </AppProviders>
