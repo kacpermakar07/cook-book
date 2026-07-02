@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 
+import { Typography } from '@components/Typography'
 import { useTheme } from '@hooks/useTheme'
 
 type ErrorStateProps = {
@@ -14,14 +15,16 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.message, { color: theme.text }]}>{message}</Text>
+      <Typography variant="body" style={styles.message}>
+        {message}
+      </Typography>
       <Pressable
         onPress={onRetry}
         style={[styles.button, { backgroundColor: theme.backgroundSelected }]}
       >
-        <Text style={[styles.buttonText, { color: theme.text }]}>
+        <Typography variant="body" style={styles.buttonText}>
           {t('errors.retry')}
-        </Text>
+        </Typography>
       </Pressable>
     </View>
   )
@@ -36,7 +39,6 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   message: {
-    fontSize: 15,
     textAlign: 'center',
   },
   button: {
@@ -45,7 +47,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   buttonText: {
-    fontSize: 14,
     fontWeight: '600',
   },
 })

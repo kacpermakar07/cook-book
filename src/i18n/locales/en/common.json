@@ -1,6 +1,7 @@
 {
   "recipeList": {
     "title": "Cook Book",
+    "heading": "Recipes",
     "searchPlaceholder": "Search recipes...",
     "cardMeta": "{{totalTime}} min · {{difficulty}}"
   },

@@ -13,8 +13,10 @@ import { useRecipesInfinite } from '@api/Recipe/recipe.hooks'
 import type { Recipe } from '@api/Recipe/recipe.types'
 import { ErrorState } from '@components/ErrorState'
 import { RecipeCard } from '@components/RecipeCard'
+import { Typography } from '@components/Typography'
 import { useDebouncedValue } from '@hooks/useDebouncedValue'
 import { useTheme } from '@hooks/useTheme'
+import { IconBook } from '@tabler/icons-react-native'
 import { getErrorMessage } from '@utils/getErrorMessage'
 
 export default function RecipeListScreen() {
@@ -40,7 +42,18 @@ export default function RecipeListScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Stack.Screen options={{ title: t('recipeList.title') }} />
+      <Stack.Screen
+        options={{
+          title: t('recipeList.title'),
+          headerTitleAlign: 'center',
+          headerLeft: () => <IconBook color={'black'} size={24} />,
+        }}
+      />
+
+      <Typography variant="title" style={styles.title}>
+        {t('recipeList.heading')}
+      </Typography>
+
       <TextInput
         value={search}
         onChangeText={setSearch}
@@ -71,6 +84,7 @@ export default function RecipeListScreen() {
               }
             />
           )}
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.list}
           refreshing={isRefetching}
           onRefresh={refetch}
@@ -112,5 +126,9 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingVertical: 16,
+  },
+  title: {
+    textAlign: 'center',
+    marginTop: 12,
   },
 })

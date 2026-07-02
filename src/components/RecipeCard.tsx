@@ -1,9 +1,10 @@
 import { Image } from 'expo-image'
 import { useTranslation } from 'react-i18next'
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 
-import { useTheme } from '@hooks/useTheme'
 import type { Recipe } from '@api/Recipe/recipe.types'
+import { Typography } from '@components/Typography'
+import { useTheme } from '@hooks/useTheme'
 
 type RecipeCardProps = {
   recipe: Recipe
@@ -25,16 +26,18 @@ export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
         style={styles.image}
         contentFit="cover"
       />
+
       <View style={styles.info}>
-        <Text style={[styles.name, { color: theme.text }]} numberOfLines={2}>
+        <Typography variant="subtitle" numberOfLines={2}>
           {recipe.name}
-        </Text>
-        <Text style={[styles.meta, { color: theme.textSecondary }]}>
+        </Typography>
+
+        <Typography variant="caption" style={{ color: theme.textSecondary }}>
           {t('recipeList.cardMeta', {
             totalTime: totalTimeMinutes,
             difficulty: recipe.difficulty,
           })}
-        </Text>
+        </Typography>
       </View>
     </Pressable>
   )
@@ -57,12 +60,5 @@ const styles = StyleSheet.create({
     padding: 12,
     justifyContent: 'center',
     gap: 4,
-  },
-  name: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  meta: {
-    fontSize: 13,
   },
 })
