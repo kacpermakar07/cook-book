@@ -3,7 +3,8 @@
     "title": "Cook Book",
     "heading": "Przepisy",
     "searchPlaceholder": "Szukaj przepisu...",
-    "cardMeta": "{{totalTime}} min · {{difficulty}}"
+    "cardTime": "{{totalTime}} min",
+    "cardDifficulty": "{{difficulty}}"
   },
   "recipeDetails": {
     "title": "Przepis",

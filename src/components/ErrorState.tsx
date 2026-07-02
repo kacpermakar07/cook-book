@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
 import { Typography } from '@components/Typography'
 import { useTheme } from '@hooks/useTheme'
@@ -18,14 +18,14 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
       <Typography variant="body" style={styles.message}>
         {message}
       </Typography>
-      <Pressable
+      <TouchableOpacity
         onPress={onRetry}
         style={[styles.button, { backgroundColor: theme.backgroundSelected }]}
       >
         <Typography variant="body" style={styles.buttonText}>
           {t('errors.retry')}
         </Typography>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   )
 }

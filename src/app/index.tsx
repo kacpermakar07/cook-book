@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import {
   ActivityIndicator,
   FlatList,
+  LayoutChangeEvent,
   StyleSheet,
-  TextInput,
   View,
 } from 'react-native'
 
@@ -13,6 +13,8 @@ import { useRecipesInfinite } from '@api/Recipe/recipe.hooks'
 import type { Recipe } from '@api/Recipe/recipe.types'
 import { ErrorState } from '@components/ErrorState'
 import { RecipeCard } from '@components/RecipeCard'
+import { SearchInput } from '@components/SearchInput'
+import { ShadowView } from '@components/ShadowView'
 import { Typography } from '@components/Typography'
 import { useDebouncedValue } from '@hooks/useDebouncedValue'
 import { useTheme } from '@hooks/useTheme'
@@ -24,6 +26,7 @@ export default function RecipeListScreen() {
   const router = useRouter()
   const { t } = useTranslation()
   const [search, setSearch] = useState('')
+  const [headerHeight, setHeaderHeight] = useState(0)
   const debouncedSearch = useDebouncedValue(search, 300)
 
   const {
@@ -40,6 +43,10 @@ export default function RecipeListScreen() {
 
   const recipes: Recipe[] = data?.pages.flatMap((page) => page.recipes) ?? []
 
+  const onHeaderLayout = (event: LayoutChangeEvent) => {
+    setHeaderHeight(event.nativeEvent.layout.height)
+  }
+
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <Stack.Screen
@@ -50,57 +57,61 @@ export default function RecipeListScreen() {
         }}
       />
 
-      <Typography variant="title" style={styles.title}>
-        {t('recipeList.heading')}
-      </Typography>
-
-      <TextInput
-        value={search}
-        onChangeText={setSearch}
-        placeholder={t('recipeList.searchPlaceholder')}
-        placeholderTextColor={theme.textSecondary}
+      <ShadowView
+        onLayout={onHeaderLayout}
         style={[
-          styles.search,
-          { backgroundColor: theme.backgroundElement, color: theme.text },
+          styles.header,
+          {
+            backgroundColor: theme.background,
+            borderBottomColor: theme.backgroundSelected,
+          },
         ]}
-      />
+      >
+        <Typography variant="title" style={styles.title}>
+          {t('recipeList.heading')}
+        </Typography>
 
-      {isPending ? (
-        <ActivityIndicator style={styles.centered} />
-      ) : isError ? (
-        <ErrorState message={getErrorMessage(error)} onRetry={refetch} />
-      ) : (
-        <FlatList
-          data={recipes}
-          keyExtractor={(recipe) => String(recipe.id)}
-          renderItem={({ item }) => (
-            <RecipeCard
-              recipe={item}
-              onPress={() =>
-                router.push({
-                  pathname: '/recipe/[id]',
-                  params: { id: String(item.id) },
-                })
+        <SearchInput value={search} onChangeText={setSearch} />
+      </ShadowView>
+
+      <View style={{ flex: 1, paddingTop: headerHeight }}>
+        {isPending ? (
+          <ActivityIndicator style={styles.centered} />
+        ) : isError ? (
+          <ErrorState message={getErrorMessage(error)} onRetry={refetch} />
+        ) : (
+          <FlatList
+            data={recipes}
+            keyExtractor={(recipe) => String(recipe.id)}
+            renderItem={({ item }) => (
+              <RecipeCard
+                recipe={item}
+                onPress={() =>
+                  router.push({
+                    pathname: '/recipe/[id]',
+                    params: { id: String(item.id) },
+                  })
+                }
+              />
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.list}
+            refreshing={isRefetching}
+            onRefresh={refetch}
+            onEndReachedThreshold={0.5}
+            onEndReached={() => {
+              if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage()
               }
-            />
-          )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.list}
-          refreshing={isRefetching}
-          onRefresh={refetch}
-          onEndReachedThreshold={0.5}
-          onEndReached={() => {
-            if (hasNextPage && !isFetchingNextPage) {
-              fetchNextPage()
+            }}
+            ListFooterComponent={
+              isFetchingNextPage ? (
+                <ActivityIndicator style={styles.footer} />
+              ) : null
             }
-          }}
-          ListFooterComponent={
-            isFetchingNextPage ? (
-              <ActivityIndicator style={styles.footer} />
-            ) : null
-          }
-        />
-      )}
+          />
+        )}
+      </View>
     </View>
   )
 }
@@ -109,17 +120,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  search: {
-    marginHorizontal: 16,
-    marginTop: 12,
-    marginBottom: 4,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 10,
-    fontSize: 15,
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
   },
   list: {
-    paddingVertical: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    gap: 16,
   },
   centered: {
     flex: 1,

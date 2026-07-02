@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   subtitle: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: '600',
   },
   body: {
     fontSize: 14,
   },
   caption: {
-    fontSize: 13,
+    fontSize: 12,
   },
 })
