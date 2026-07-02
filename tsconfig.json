@@ -4,8 +4,14 @@
     "strict": true,
     "types": ["node"],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/assets/*": ["./assets/*"]
+      "@api/*": ["./src/api/*"],
+      "@assets/*": ["./assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@i18n/*": ["./src/i18n/*"],
+      "@providers/*": ["./src/providers/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

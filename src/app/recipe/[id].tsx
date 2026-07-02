@@ -1,19 +1,31 @@
-import { Image } from 'expo-image';
-import { Stack, useLocalSearchParams } from 'expo-router';
-import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image'
+import { Stack, useLocalSearchParams } from 'expo-router'
+import { useTranslation } from 'react-i18next'
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 
-import { useRecipe } from '@/api/Recipe/recipe.hooks';
-import { ErrorState } from '@/components/ErrorState';
-import { useTheme } from '@/hooks/useTheme';
-import { getErrorMessage } from '@/utils/getErrorMessage';
+import { useRecipe } from '@api/Recipe/recipe.hooks'
+import { ErrorState } from '@components/ErrorState'
+import { useTheme } from '@hooks/useTheme'
+import { getErrorMessage } from '@utils/getErrorMessage'
 
 export default function RecipeDetailsScreen() {
-  const theme = useTheme();
-  const { t } = useTranslation();
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const recipeId = Number(id);
-  const { data: recipe, isPending, isError, error, refetch } = useRecipe(recipeId);
+  const theme = useTheme()
+  const { t } = useTranslation()
+  const { id } = useLocalSearchParams<{ id: string }>()
+  const recipeId = Number(id)
+  const {
+    data: recipe,
+    isPending,
+    isError,
+    error,
+    refetch,
+  } = useRecipe(recipeId)
 
   if (isPending) {
     return (
@@ -21,7 +33,7 @@ export default function RecipeDetailsScreen() {
         <Stack.Screen options={{ title: t('recipeDetails.title') }} />
         <ActivityIndicator style={styles.centered} />
       </View>
-    );
+    )
   }
 
   if (isError) {
@@ -30,10 +42,10 @@ export default function RecipeDetailsScreen() {
         <Stack.Screen options={{ title: t('recipeDetails.title') }} />
         <ErrorState message={getErrorMessage(error)} onRetry={refetch} />
       </View>
-    );
+    )
   }
 
-  const totalTimeMinutes = recipe.prepTimeMinutes + recipe.cookTimeMinutes;
+  const totalTimeMinutes = recipe.prepTimeMinutes + recipe.cookTimeMinutes
 
   return (
     <ScrollView
@@ -41,7 +53,11 @@ export default function RecipeDetailsScreen() {
       contentContainerStyle={styles.content}
     >
       <Stack.Screen options={{ title: recipe.name }} />
-      <Image source={{ uri: recipe.image }} style={styles.image} contentFit="cover" />
+      <Image
+        source={{ uri: recipe.image }}
+        style={styles.image}
+        contentFit="cover"
+      />
       <Text style={[styles.name, { color: theme.text }]}>{recipe.name}</Text>
       <Text style={[styles.meta, { color: theme.textSecondary }]}>
         {t('recipeDetails.meta', {
@@ -70,7 +86,7 @@ export default function RecipeDetailsScreen() {
         </Text>
       ))}
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -112,4 +128,4 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     lineHeight: 20,
   },
-});
+})

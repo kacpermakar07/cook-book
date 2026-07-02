@@ -1,22 +1,28 @@
-import { Stack, useRouter } from 'expo-router';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, StyleSheet, TextInput, View } from 'react-native';
+import { Stack, useRouter } from 'expo-router'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native'
 
-import { useRecipesInfinite } from '@/api/Recipe/recipe.hooks';
-import type { Recipe } from '@/api/Recipe/recipe.types';
-import { ErrorState } from '@/components/ErrorState';
-import { RecipeCard } from '@/components/RecipeCard';
-import { useDebouncedValue } from '@/hooks/useDebouncedValue';
-import { useTheme } from '@/hooks/useTheme';
-import { getErrorMessage } from '@/utils/getErrorMessage';
+import { useRecipesInfinite } from '@api/Recipe/recipe.hooks'
+import type { Recipe } from '@api/Recipe/recipe.types'
+import { ErrorState } from '@components/ErrorState'
+import { RecipeCard } from '@components/RecipeCard'
+import { useDebouncedValue } from '@hooks/useDebouncedValue'
+import { useTheme } from '@hooks/useTheme'
+import { getErrorMessage } from '@utils/getErrorMessage'
 
 export default function RecipeListScreen() {
-  const theme = useTheme();
-  const router = useRouter();
-  const { t } = useTranslation();
-  const [search, setSearch] = useState('');
-  const debouncedSearch = useDebouncedValue(search, 300);
+  const theme = useTheme()
+  const router = useRouter()
+  const { t } = useTranslation()
+  const [search, setSearch] = useState('')
+  const debouncedSearch = useDebouncedValue(search, 300)
 
   const {
     data,
@@ -28,9 +34,9 @@ export default function RecipeListScreen() {
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useRecipesInfinite(debouncedSearch);
+  } = useRecipesInfinite(debouncedSearch)
 
-  const recipes: Recipe[] = data?.pages.flatMap((page) => page.recipes) ?? [];
+  const recipes: Recipe[] = data?.pages.flatMap((page) => page.recipes) ?? []
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -40,7 +46,10 @@ export default function RecipeListScreen() {
         onChangeText={setSearch}
         placeholder={t('recipeList.searchPlaceholder')}
         placeholderTextColor={theme.textSecondary}
-        style={[styles.search, { backgroundColor: theme.backgroundElement, color: theme.text }]}
+        style={[
+          styles.search,
+          { backgroundColor: theme.backgroundElement, color: theme.text },
+        ]}
       />
 
       {isPending ? (
@@ -55,7 +64,10 @@ export default function RecipeListScreen() {
             <RecipeCard
               recipe={item}
               onPress={() =>
-                router.push({ pathname: '/recipe/[id]', params: { id: String(item.id) } })
+                router.push({
+                  pathname: '/recipe/[id]',
+                  params: { id: String(item.id) },
+                })
               }
             />
           )}
@@ -65,16 +77,18 @@ export default function RecipeListScreen() {
           onEndReachedThreshold={0.5}
           onEndReached={() => {
             if (hasNextPage && !isFetchingNextPage) {
-              fetchNextPage();
+              fetchNextPage()
             }
           }}
           ListFooterComponent={
-            isFetchingNextPage ? <ActivityIndicator style={styles.footer} /> : null
+            isFetchingNextPage ? (
+              <ActivityIndicator style={styles.footer} />
+            ) : null
           }
         />
       )}
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -99,4 +113,4 @@ const styles = StyleSheet.create({
   footer: {
     paddingVertical: 16,
   },
-});
+})

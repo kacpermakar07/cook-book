@@ -12,8 +12,10 @@ A small recruitment-task app: two screens (recipe list, recipe details) backed b
 
 - Expo SDK 57 + Expo Router (typed routes, file-based routing in `src/app`) — this is React Navigation under the hood
 - React 19 / React Native 0.86, TypeScript strict
+- **Native only (iOS/Android) — no web target.** `react-dom`/`react-native-web` are not installed; don't reintroduce web-only code (e.g. `Platform.select({ web: ... })` branches, `.web.ts` platform files, `web` block in `app.json`) unless the user asks for web support back.
 - TanStack Query + axios for data fetching (list pagination, search, details)
 - expo-image for list/detail photos (better caching/perf than core `Image`)
+- @tabler/icons-react-native (+ react-native-svg peer) for icons
 - react-i18next + i18next for translations (PL default, EN fallback)
 - No client-state library, no forms library — not needed for this scope
 - Package manager: yarn (classic 1.x)
@@ -21,7 +23,7 @@ A small recruitment-task app: two screens (recipe list, recipe details) backed b
 
 ## Commands
 
-- `yarn start` / `yarn android` / `yarn ios` / `yarn web` — run the app
+- `yarn start` / `yarn android` / `yarn ios` — run the app
 - `yarn tsc` — typecheck (`tsc --noEmit`)
 - `yarn lint` / `yarn lint:fix` — eslint (flat config, `eslint-config-expo/flat` + `eslint-config-prettier`)
 - `yarn prettier:fix` — format
@@ -48,6 +50,10 @@ src/
 ```
 
 API layer convention: `recipe.api.ts` (plain HTTP calls) → `recipe.queryKeys.ts` (centralized keys) → `recipe.hooks.ts` (`useRecipesInfinite`/`useRecipe`). Screens import only from `recipe.hooks.ts`.
+
+## Path aliases
+
+`@api/*`, `@components/*`, `@constants/*`, `@hooks/*`, `@i18n/*`, `@providers/*`, `@utils/*` → `src/{folder}/*`; `@assets/*` → `./assets/*`. Defined in `tsconfig.json`'s `compilerOptions.paths` only — **no `babel.config.js` needed or present**. Since Expo SDK ~50+, `@expo/metro-config` reads `tsconfig.json` paths directly and wires them into Metro's resolver; verified by exporting a real bundle (`npx expo export`). Same-folder imports (e.g. `useTheme.ts` → `./useColorScheme`) stay relative rather than going through an alias. When adding a new top-level `src/` folder that needs importing from elsewhere, add its alias to `tsconfig.json` — nothing else to configure.
 
 ## Conventions
 

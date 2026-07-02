@@ -23,7 +23,7 @@ yarn install
 yarn start
 ```
 
-Then press `w` for web, or scan the QR code with Expo Go / press `a`/`i` for Android/iOS.
+Then scan the QR code with Expo Go, or press `a`/`i` for Android/iOS. No web target — this is a native-only app.
 
 ## Other commands
 
