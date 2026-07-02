@@ -1,7 +1,7 @@
 import { Image } from 'expo-image'
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Platform, Pressable, StyleSheet, View } from 'react-native'
 
 import type { Recipe } from '@api/Recipe/recipe.types'
 import { ShadowView } from '@components/ShadowView'
@@ -26,10 +26,14 @@ export const RecipeCard = memo(function RecipeCard({
 
   return (
     <ShadowView style={styles.shadowWrapper}>
-      <TouchableOpacity
+      <Pressable
         onPress={() => onPress(recipe.id)}
-        activeOpacity={0.8}
-        style={[styles.container, { backgroundColor: theme.backgroundElement }]}
+        android_ripple={{ color: theme.backgroundSelected }}
+        style={({ pressed }) => [
+          styles.container,
+          { backgroundColor: theme.backgroundElement },
+          pressed && Platform.OS === 'ios' && styles.pressed,
+        ]}
       >
         <Image
           source={{ uri: recipe.image }}
@@ -64,7 +68,7 @@ export const RecipeCard = memo(function RecipeCard({
             </Typography>
           </View>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </ShadowView>
   )
 })
@@ -78,6 +82,9 @@ const styles = StyleSheet.create({
     height: RECIPE_CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
+  },
+  pressed: {
+    opacity: 0.8,
   },
   image: {
     width: RECIPE_CARD_HEIGHT,

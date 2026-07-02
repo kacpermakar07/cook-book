@@ -18,6 +18,7 @@ export function ErrorState({ message, onRetry }: ErrorStateProps) {
       <Typography variant="body" style={styles.message}>
         {message}
       </Typography>
+
       <TouchableOpacity
         onPress={onRetry}
         style={[styles.button, { backgroundColor: theme.backgroundSelected }]}
