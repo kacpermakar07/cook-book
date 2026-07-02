@@ -51,6 +51,8 @@ src/
 
 API layer convention: `recipe.api.ts` (plain HTTP calls) → `recipe.queryKeys.ts` (centralized keys) → `recipe.hooks.ts` (`useRecipesInfinite`/`useRecipe`). Screens import only from `recipe.hooks.ts`.
 
+Tests live under a top-level `tests/` directory that mirrors `src/`'s folder structure (e.g. `src/api/Recipe/recipe.api.ts` → `tests/api/Recipe/recipe.api.test.ts`), not co-located with source files. Test files import the code under test via the path aliases below (e.g. `@api/Recipe/recipe.api`), not relative paths — `tests/` sits outside `src/`, so `../../src/...` would be worse than just using the alias.
+
 ## Path aliases
 
 `@api/*`, `@components/*`, `@constants/*`, `@hooks/*`, `@i18n/*`, `@providers/*`, `@utils/*` → `src/{folder}/*`; `@assets/*` → `./assets/*`. Defined in `tsconfig.json`'s `compilerOptions.paths` only — **no `babel.config.js` needed or present**. Since Expo SDK ~50+, `@expo/metro-config` reads `tsconfig.json` paths directly and wires them into Metro's resolver; verified by exporting a real bundle (`npx expo export`). Same-folder imports (e.g. `useTheme.ts` → `./useColorScheme`) stay relative rather than going through an alias. When adding a new top-level `src/` folder that needs importing from elsewhere, add its alias to `tsconfig.json` — nothing else to configure.
@@ -63,9 +65,9 @@ API layer convention: `recipe.api.ts` (plain HTTP calls) → `recipe.queryKeys.t
 
 ## Testing
 
-Uses `node:test` + `tsx` (per the task's suggested stack), not Jest. Two layers are wired up and pass:
+Uses `node:test` + `tsx` (per the task's suggested stack), not Jest. Two layers are wired up and pass, both under `tests/` (see Structure above):
 
-1. **Pure logic** (`getNextPageSkip.test.ts`, `getErrorMessage.test.ts`, `getErrorStatus.test.ts`) — no mocking needed.
-2. **API layer** (`recipe.api.test.ts`) — mocks `axiosClient.get` via node:test's built-in `t.mock.method`, no network calls, no extra mocking library.
+1. **Pure logic** (`tests/api/Recipe/getNextPageSkip.test.ts`, `tests/utils/getErrorMessage.test.ts`, `tests/utils/getErrorStatus.test.ts`) — no mocking needed.
+2. **API layer** (`tests/api/Recipe/recipe.api.test.ts`) — mocks `axiosClient.get` via node:test's built-in `t.mock.method`, no network calls, no extra mocking library.
 
 **Component-rendering tests were attempted and deliberately dropped.** `@testing-library/react-native@14` needs Node ≥22.13 (fine) but also `react-native-testing-mocks` to require 'react-native' outside Jest, which in turn needs `@react-native/babel-preset`/`@babel/register`/`@babel/core` as explicit top-level dependencies (not just transitive) — and that package only declares support up to Node 22.6, while this machine runs 22.19. Installing the extra Babel packages to chase this down further would have meant a growing pile of glue dependencies for a "minimal dependencies" task, so it was cut once the pure-logic and API-layer tests were solid. If revisiting: either add the missing `@react-native/babel-preset`/`@babel/register`/`@babel/core` devDependencies and accept the Node-version mismatch risk, or switch to Jest + `jest-expo` (the fully-supported, documented path) for component tests specifically.

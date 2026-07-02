@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
-import { axiosClient } from '../axiosClient'
-import { RECIPES_PAGE_SIZE, recipesApi } from './recipe.api'
+import { axiosClient } from '@api/axiosClient'
+import { RECIPES_PAGE_SIZE, recipesApi } from '@api/Recipe/recipe.api'
 
 test('list() calls /recipes with limit/skip when there is no search query', async (t) => {
   const getMock = t.mock.method(axiosClient, 'get', async () => ({

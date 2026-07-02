@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
-import { getErrorStatus } from './getErrorStatus'
+import { getErrorStatus } from '@utils/getErrorStatus'
 
 test('returns the HTTP status from an axios error response', () => {
   const error = { isAxiosError: true, response: { status: 404 } }

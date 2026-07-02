@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
-import { getNextPageSkip } from './getNextPageSkip'
+import { getNextPageSkip } from '@api/Recipe/getNextPageSkip'
 
 test('returns the next skip when more pages remain', () => {
   assert.equal(getNextPageSkip({ skip: 0, limit: 12, total: 50 }), 12)

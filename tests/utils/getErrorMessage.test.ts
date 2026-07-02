@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
-import { getErrorMessage } from './getErrorMessage'
+import { getErrorMessage } from '@utils/getErrorMessage'
 
 test('returns the API message from an axios error response body', () => {
   const error = {
