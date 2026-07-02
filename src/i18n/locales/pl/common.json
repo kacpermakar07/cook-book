@@ -5,11 +5,15 @@
     "searchPlaceholder": "Szukaj przepisu...",
     "totalCount": "Dostępnych przepisów: {{count}}",
     "cardTime": "{{totalTime}} min",
-    "cardDifficulty": "{{difficulty}}"
+    "cardDifficulty": "{{difficulty}}",
+    "cardServings": "{{servings}} porcje"
   },
   "recipeDetails": {
     "title": "Przepis",
-    "meta": "{{totalTime}} min · {{difficulty}} · {{servings}} porcje · {{calories}} kcal/porcję",
+    "metaTime": "{{totalTime}} min",
+    "metaDifficulty": "{{difficulty}}",
+    "metaServings": "{{servings}} porcje",
+    "metaCalories": "{{calories}} kcal/porcję",
     "ingredients": "Składniki",
     "instructions": "Przygotowanie"
   },

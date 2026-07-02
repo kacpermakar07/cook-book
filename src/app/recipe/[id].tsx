@@ -7,6 +7,12 @@ import { useRecipe } from '@api/Recipe/recipe.hooks'
 import { ErrorState } from '@components/ErrorState'
 import { Typography } from '@components/Typography'
 import { useTheme } from '@hooks/useTheme'
+import {
+  IconChefHat,
+  IconClock,
+  IconFlame,
+  IconUsers,
+} from '@tabler/icons-react-native'
 import { getErrorMessage } from '@utils/getErrorMessage'
 
 export default function RecipeDetailsScreen() {
@@ -26,6 +32,7 @@ export default function RecipeDetailsScreen() {
     return (
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         <Stack.Screen options={{ title: t('recipeDetails.title') }} />
+
         <ActivityIndicator style={styles.centered} />
       </View>
     )
@@ -35,6 +42,7 @@ export default function RecipeDetailsScreen() {
     return (
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         <Stack.Screen options={{ title: t('recipeDetails.title') }} />
+
         <ErrorState message={getErrorMessage(error)} onRetry={refetch} />
       </View>
     )
@@ -46,31 +54,54 @@ export default function RecipeDetailsScreen() {
     <ScrollView
       style={[styles.container, { backgroundColor: theme.background }]}
       contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
     >
       <Stack.Screen options={{ title: recipe.name }} />
+
       <Image
         source={{ uri: recipe.image }}
         style={styles.image}
         contentFit="cover"
       />
+
       <Typography variant="title" style={styles.name}>
         {recipe.name}
       </Typography>
-      <Typography
-        variant="body"
-        style={[styles.meta, { color: theme.textSecondary }]}
-      >
-        {t('recipeDetails.meta', {
-          totalTime: totalTimeMinutes,
-          difficulty: recipe.difficulty,
-          servings: recipe.servings,
-          calories: recipe.caloriesPerServing,
-        })}
-      </Typography>
+
+      <View style={styles.meta}>
+        <IconClock size={20} opacity={0.8} color={theme.textSecondary} />
+
+        <Typography variant="body" style={{ color: theme.textSecondary }}>
+          {t('recipeDetails.metaTime', { totalTime: totalTimeMinutes })}
+        </Typography>
+
+        <IconChefHat size={20} opacity={0.8} color={theme.textSecondary} />
+
+        <Typography variant="body" style={{ color: theme.textSecondary }}>
+          {t('recipeDetails.metaDifficulty', {
+            difficulty: recipe.difficulty,
+          })}
+        </Typography>
+
+        <IconUsers size={20} opacity={0.8} color={theme.textSecondary} />
+
+        <Typography variant="body" style={{ color: theme.textSecondary }}>
+          {t('recipeDetails.metaServings', { servings: recipe.servings })}
+        </Typography>
+
+        <IconFlame size={20} opacity={0.8} color={theme.textSecondary} />
+
+        <Typography variant="body" style={{ color: theme.textSecondary }}>
+          {t('recipeDetails.metaCalories', {
+            calories: recipe.caloriesPerServing,
+          })}
+        </Typography>
+      </View>
 
       <Typography variant="subtitle" style={styles.sectionTitle}>
         {t('recipeDetails.ingredients')}
       </Typography>
+
       {recipe.ingredients.map((ingredient, index) => (
         <Typography key={index} variant="body" style={styles.listItem}>
           • {ingredient}
@@ -80,6 +111,7 @@ export default function RecipeDetailsScreen() {
       <Typography variant="subtitle" style={styles.sectionTitle}>
         {t('recipeDetails.instructions')}
       </Typography>
+
       {recipe.instructions.map((instruction, index) => (
         <Typography key={index} variant="body" style={styles.listItem}>
           {index + 1}. {instruction}
@@ -101,16 +133,20 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 220,
+    height: 350,
   },
   name: {
     marginHorizontal: 16,
     marginTop: 12,
   },
   meta: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
     marginHorizontal: 16,
     marginTop: 4,
     marginBottom: 12,
+    gap: 4,
   },
   sectionTitle: {
     marginHorizontal: 16,
