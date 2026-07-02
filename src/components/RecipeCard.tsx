@@ -1,4 +1,5 @@
 import { Image } from 'expo-image'
+import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
@@ -8,12 +9,17 @@ import { Typography } from '@components/Typography'
 import { useTheme } from '@hooks/useTheme'
 import { IconChefHat, IconClock } from '@tabler/icons-react-native'
 
+export const RECIPE_CARD_HEIGHT = 90
+
 type RecipeCardProps = {
   recipe: Recipe
-  onPress: () => void
+  onPress: (id: number) => void
 }
 
-export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
+export const RecipeCard = memo(function RecipeCard({
+  recipe,
+  onPress,
+}: RecipeCardProps) {
   const theme = useTheme()
   const { t } = useTranslation()
   const totalTimeMinutes = recipe.prepTimeMinutes + recipe.cookTimeMinutes
@@ -21,7 +27,7 @@ export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
   return (
     <ShadowView style={styles.shadowWrapper}>
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => onPress(recipe.id)}
         activeOpacity={0.8}
         style={[styles.container, { backgroundColor: theme.backgroundElement }]}
       >
@@ -61,7 +67,7 @@ export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
       </TouchableOpacity>
     </ShadowView>
   )
-}
+})
 
 const styles = StyleSheet.create({
   shadowWrapper: {
@@ -69,12 +75,13 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
+    height: RECIPE_CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
   },
   image: {
-    width: 90,
-    height: 90,
+    width: RECIPE_CARD_HEIGHT,
+    height: RECIPE_CARD_HEIGHT,
   },
   info: {
     flex: 1,

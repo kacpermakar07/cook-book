@@ -34,8 +34,10 @@ const styles = StyleSheet.create({
   },
   body: {
     fontSize: 14,
+    fontWeight: '500',
   },
   caption: {
     fontSize: 12,
+    fontWeight: '400',
   },
 })

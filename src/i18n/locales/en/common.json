@@ -3,6 +3,7 @@
     "title": "Cook Book",
     "heading": "Recipes",
     "searchPlaceholder": "Search recipes...",
+    "totalCount": "Available recipes: {{count}}",
     "cardTime": "{{totalTime}} min",
     "cardDifficulty": "{{difficulty}}"
   },

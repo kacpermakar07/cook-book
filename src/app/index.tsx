@@ -1,10 +1,11 @@
 import { Stack, useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ActivityIndicator,
   FlatList,
   LayoutChangeEvent,
+  ListRenderItemInfo,
   StyleSheet,
   View,
 } from 'react-native'
@@ -12,14 +13,28 @@ import {
 import { useRecipesInfinite } from '@api/Recipe/recipe.hooks'
 import type { Recipe } from '@api/Recipe/recipe.types'
 import { ErrorState } from '@components/ErrorState'
-import { RecipeCard } from '@components/RecipeCard'
+import { RECIPE_CARD_HEIGHT, RecipeCard } from '@components/RecipeCard'
+import { RecipeListHeader } from '@components/RecipeListHeader'
 import { SearchInput } from '@components/SearchInput'
 import { ShadowView } from '@components/ShadowView'
 import { Typography } from '@components/Typography'
 import { useDebouncedValue } from '@hooks/useDebouncedValue'
 import { useTheme } from '@hooks/useTheme'
-import { IconBook } from '@tabler/icons-react-native'
 import { getErrorMessage } from '@utils/getErrorMessage'
+
+const LIST_GAP = 16
+const LIST_PADDING_TOP = 16
+
+const keyExtractor = (recipe: Recipe) => String(recipe.id)
+
+const getItemLayout = (
+  _: ArrayLike<Recipe> | null | undefined,
+  index: number,
+) => ({
+  length: RECIPE_CARD_HEIGHT,
+  offset: LIST_PADDING_TOP + index * (RECIPE_CARD_HEIGHT + LIST_GAP),
+  index,
+})
 
 export default function RecipeListScreen() {
   const theme = useTheme()
@@ -42,37 +57,54 @@ export default function RecipeListScreen() {
   } = useRecipesInfinite(debouncedSearch)
 
   const recipes: Recipe[] = data?.pages.flatMap((page) => page.recipes) ?? []
+  const totalCount = data?.pages[0]?.total
 
   const onHeaderLayout = (event: LayoutChangeEvent) => {
     setHeaderHeight(event.nativeEvent.layout.height)
   }
 
+  const handleRecipePress = useCallback(
+    (id: number) => {
+      router.push({ pathname: '/recipe/[id]', params: { id: String(id) } })
+    },
+    [router],
+  )
+
+  const renderItem = useCallback(
+    ({ item }: ListRenderItemInfo<Recipe>) => (
+      <RecipeCard recipe={item} onPress={handleRecipePress} />
+    ),
+    [handleRecipePress],
+  )
+
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <Stack.Screen
-        options={{
-          title: t('recipeList.title'),
-          headerTitleAlign: 'center',
-          headerLeft: () => <IconBook color={'black'} size={24} />,
-        }}
+        options={{ title: t('recipeList.title'), headerShown: false }}
       />
 
-      <ShadowView
-        onLayout={onHeaderLayout}
-        style={[
-          styles.header,
-          {
-            backgroundColor: theme.background,
-            borderBottomColor: theme.backgroundSelected,
-          },
-        ]}
-      >
-        <Typography variant="title" style={styles.title}>
-          {t('recipeList.heading')}
-        </Typography>
+      <View onLayout={onHeaderLayout} style={styles.header}>
+        <RecipeListHeader />
 
-        <SearchInput value={search} onChangeText={setSearch} />
-      </ShadowView>
+        <ShadowView
+          style={[styles.searchSection, { backgroundColor: theme.background }]}
+        >
+          <Typography variant="title" style={styles.heading}>
+            {t('recipeList.heading')}
+          </Typography>
+
+          <SearchInput value={search} onChangeText={setSearch} />
+
+          {totalCount !== undefined && (
+            <Typography
+              variant="body"
+              style={[styles.totalCount, { color: theme.textSecondary }]}
+            >
+              {t('recipeList.totalCount', { count: totalCount })}
+            </Typography>
+          )}
+        </ShadowView>
+      </View>
 
       <View style={{ flex: 1, paddingTop: headerHeight }}>
         {isPending ? (
@@ -82,18 +114,9 @@ export default function RecipeListScreen() {
         ) : (
           <FlatList
             data={recipes}
-            keyExtractor={(recipe) => String(recipe.id)}
-            renderItem={({ item }) => (
-              <RecipeCard
-                recipe={item}
-                onPress={() =>
-                  router.push({
-                    pathname: '/recipe/[id]',
-                    params: { id: String(item.id) },
-                  })
-                }
-              />
-            )}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            getItemLayout={getItemLayout}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.list}
             refreshing={isRefetching}
@@ -109,6 +132,10 @@ export default function RecipeListScreen() {
                 <ActivityIndicator style={styles.footer} />
               ) : null
             }
+            removeClippedSubviews
+            initialNumToRender={8}
+            maxToRenderPerBatch={8}
+            windowSize={7}
           />
         )}
       </View>
@@ -126,8 +153,18 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 10,
+  },
+  searchSection: {
     paddingBottom: 8,
-    borderBottomWidth: 1,
+  },
+  heading: {
+    textAlign: 'center',
+    marginTop: 12,
+  },
+  totalCount: {
+    textTransform: 'uppercase',
+    paddingHorizontal: 16,
+    marginVertical: 4,
   },
   list: {
     paddingHorizontal: 16,
@@ -139,9 +176,5 @@ const styles = StyleSheet.create({
   },
   footer: {
     paddingVertical: 16,
-  },
-  title: {
-    textAlign: 'center',
-    marginTop: 12,
   },
 })

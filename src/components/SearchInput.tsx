@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   wrapper: {
     marginHorizontal: 16,
     marginTop: 12,
-    marginBottom: 16,
+    marginBottom: 8,
     borderRadius: 10,
     justifyContent: 'center',
   },

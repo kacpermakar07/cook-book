@@ -9,7 +9,7 @@ i18n.use(initReactI18next).init({
     en: { common: en },
     pl: { common: pl },
   },
-  lng: 'pl',
+  lng: 'en',
   fallbackLng: 'en',
   defaultNS: 'common',
   interpolation: { escapeValue: false },
