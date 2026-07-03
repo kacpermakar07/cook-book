@@ -1,5 +1,5 @@
 import { Stack, useRouter } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ActivityIndicator,
@@ -56,7 +56,10 @@ export default function RecipeListScreen() {
     hasNextPage,
   } = useRecipesInfinite(debouncedSearch)
 
-  const recipes: Recipe[] = data?.pages.flatMap((page) => page.recipes) ?? []
+  const recipes: Recipe[] = useMemo(
+    () => data?.pages.flatMap((page) => page.recipes) ?? [],
+    [data],
+  )
   const totalCount = data?.pages[0]?.total
 
   const onHeaderLayout = (event: LayoutChangeEvent) => {

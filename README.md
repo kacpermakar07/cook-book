@@ -28,7 +28,9 @@ Then scan the QR code with Expo Go, or press `a`/`i` for Android/iOS. No web tar
 ## Other commands
 
 - `yarn tsc` — typecheck
-- `yarn lint` — eslint
-- `yarn test` — run the test suite (`node:test`, no Jest)
+- `yarn lint` / `yarn lint:fix` — eslint
+- `yarn prettier:fix` — format
+- `yarn test` — pure-logic and API-layer tests (`node:test`, no Jest)
+- `yarn test:screens` — screen-level component tests (Jest + `jest-expo` + `@testing-library/react-native`)
 
-See `CLAUDE.md` for stack details, structure, and testing notes (including a documented limitation around component-rendering tests).
+See `CLAUDE.md` for stack details, structure, and testing notes.

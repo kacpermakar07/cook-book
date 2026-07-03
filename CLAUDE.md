@@ -45,10 +45,10 @@ src/
                   Recipe/recipe.types.ts + recipe.api.ts + recipe.queryKeys.ts + recipe.hooks.ts + getNextPageSkip.ts
   components/     RecipeCard.tsx (list item), ErrorState.tsx (message + retry, shared by both screens)
   providers/      AppProviders.tsx — wraps QueryClientProvider; mounted in src/app/_layout.tsx
-  hooks/          useColorScheme (+ .web variant for SSR-safe hydration), useTheme, useDebouncedValue
+  hooks/          useColorScheme (thin re-export of react-native's), useTheme, useDebouncedValue
   utils/          getErrorMessage / getErrorStatus — axios error parsing helpers used by ErrorState
   i18n/           i18n.ts init + locales/{pl,en}/common.json (pl default, en fallback; keep keys identical between languages)
-  constants/      theme.ts — Colors/Fonts/Spacing tokens, useTheme reads from here
+  constants/      theme.ts — Colors tokens, useTheme reads from here
 ```
 
 API layer convention: `recipe.api.ts` (plain HTTP calls) → `recipe.queryKeys.ts` (centralized keys) → `recipe.hooks.ts` (`useRecipesInfinite`/`useRecipe`). Screens import only from `recipe.hooks.ts`.

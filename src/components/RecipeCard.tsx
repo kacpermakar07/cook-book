@@ -39,6 +39,7 @@ export const RecipeCard = memo(function RecipeCard({
           source={{ uri: recipe.image }}
           style={styles.image}
           contentFit="cover"
+          recyclingKey={String(recipe.id)}
         />
 
         <View style={styles.info}>
