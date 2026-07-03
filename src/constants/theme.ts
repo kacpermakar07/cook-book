@@ -14,3 +14,5 @@ export const Colors = {
     textSecondary: '#B0B4BA',
   },
 } as const
+
+export const ShadowColor = '#000000'

@@ -109,7 +109,7 @@ export default function RecipeListScreen() {
         </ShadowView>
       </View>
 
-      <View style={{ flex: 1, paddingTop: headerHeight }}>
+      <View style={[styles.content, { paddingTop: headerHeight }]}>
         {isPending ? (
           <ActivityIndicator style={styles.centered} />
         ) : isError ? (
@@ -148,6 +148,9 @@ export default function RecipeListScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  content: {
     flex: 1,
   },
   header: {
