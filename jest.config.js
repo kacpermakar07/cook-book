@@ -2,6 +2,7 @@
 module.exports = {
   preset: 'jest-expo',
   testMatch: ['<rootDir>/tests/**/*.test.tsx'],
+  clearMocks: true,
   setupFiles: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '^@api/(.*)$': '<rootDir>/src/api/$1',

@@ -16,6 +16,7 @@
     "lint:fix": "eslint . --fix",
     "prettier:fix": "prettier --write .",
     "test": "node --import tsx --test",
+    "test:screens": "jest --forceExit",
     "prebuild": "npx expo prebuild --clean"
   },
   "dependencies": {
