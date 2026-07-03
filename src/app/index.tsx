@@ -1,4 +1,4 @@
-import { Stack, useRouter } from 'expo-router'
+import { Stack, useFocusEffect, useRouter } from 'expo-router'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -61,6 +61,12 @@ export default function RecipeListScreen() {
     [data],
   )
   const totalCount = data?.pages[0]?.total
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch()
+    }, [refetch]),
+  )
 
   const onHeaderLayout = (event: LayoutChangeEvent) => {
     setHeaderHeight(event.nativeEvent.layout.height)

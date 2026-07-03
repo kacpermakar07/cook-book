@@ -17,6 +17,10 @@ const mockPush = jest.fn()
 jest.mock('expo-router', () => ({
   Stack: { Screen: () => null },
   useRouter: () => ({ push: mockPush }),
+  useFocusEffect: (effect: () => void) => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports -- jest.mock() factories can't reference outer-scope imports (babel-plugin-jest-hoist)
+    require('react').useEffect(effect, [effect])
+  },
 }))
 
 const mockedRecipesApi = jest.mocked(recipesApi)
