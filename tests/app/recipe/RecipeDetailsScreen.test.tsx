@@ -15,31 +15,30 @@ jest.mock('expo-router', () => ({
 
 const mockedRecipesApi = jest.mocked(recipesApi)
 
-function makeRecipe(overrides: Partial<Recipe> = {}): Recipe {
-  return {
-    id: 1,
-    name: 'Pancakes',
-    ingredients: ['Flour', 'Milk'],
-    instructions: ['Mix', 'Cook'],
-    prepTimeMinutes: 10,
-    cookTimeMinutes: 5,
-    servings: 2,
-    difficulty: 'Easy',
-    cuisine: 'American',
-    caloriesPerServing: 200,
-    tags: [],
-    image: 'https://example.com/pancakes.jpg',
-    rating: 4.5,
-    reviewCount: 10,
-    mealType: ['Breakfast'],
-    ...overrides,
-  }
-}
+const makeRecipe = (overrides: Partial<Recipe> = {}): Recipe => ({
+  id: 1,
+  name: 'Pancakes',
+  ingredients: ['Flour', 'Milk'],
+  instructions: ['Mix', 'Cook'],
+  prepTimeMinutes: 10,
+  cookTimeMinutes: 5,
+  servings: 2,
+  difficulty: 'Easy',
+  cuisine: 'American',
+  caloriesPerServing: 200,
+  tags: [],
+  image: 'https://example.com/pancakes.jpg',
+  rating: 4.5,
+  reviewCount: 10,
+  mealType: ['Breakfast'],
+  ...overrides,
+})
 
-function renderScreen() {
+const renderScreen = () => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
+
   return render(
     <QueryClientProvider client={queryClient}>
       <RecipeDetailsScreen />

@@ -10,7 +10,7 @@ type SearchInputProps = {
   onChangeText: (text: string) => void
 }
 
-export function SearchInput({ value, onChangeText }: SearchInputProps) {
+export const SearchInput = ({ value, onChangeText }: SearchInputProps) => {
   const theme = useTheme()
   const { t } = useTranslation()
 

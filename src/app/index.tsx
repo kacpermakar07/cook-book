@@ -36,7 +36,7 @@ const getItemLayout = (
   index,
 })
 
-export default function RecipeListScreen() {
+const RecipeListScreen = () => {
   const theme = useTheme()
   const router = useRouter()
   const { t } = useTranslation()
@@ -151,6 +151,8 @@ export default function RecipeListScreen() {
     </View>
   )
 }
+
+export default RecipeListScreen
 
 const styles = StyleSheet.create({
   container: {

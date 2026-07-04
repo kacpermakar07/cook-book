@@ -8,11 +8,11 @@ type TypographyProps = TextProps & {
   variant?: TypographyVariant
 }
 
-export function Typography({
+export const Typography = ({
   variant = 'body',
   style,
   ...textProps
-}: TypographyProps) {
+}: TypographyProps) => {
   const theme = useTheme()
 
   return (

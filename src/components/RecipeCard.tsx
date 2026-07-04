@@ -1,9 +1,10 @@
 import { Image } from 'expo-image'
 import { memo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Platform, Pressable, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import type { Recipe } from '@api/Recipe/recipe.types'
+import { AppPressable } from '@components/AppPressable'
 import { ShadowView } from '@components/ShadowView'
 import { Typography } from '@components/Typography'
 import { useTheme } from '@hooks/useTheme'
@@ -16,24 +17,16 @@ type RecipeCardProps = {
   onPress: (id: number) => void
 }
 
-export const RecipeCard = memo(function RecipeCard({
-  recipe,
-  onPress,
-}: RecipeCardProps) {
+export const RecipeCard = memo(({ recipe, onPress }: RecipeCardProps) => {
   const theme = useTheme()
   const { t } = useTranslation()
   const totalTimeMinutes = recipe.prepTimeMinutes + recipe.cookTimeMinutes
 
   return (
     <ShadowView style={styles.shadowWrapper}>
-      <Pressable
+      <AppPressable
         onPress={() => onPress(recipe.id)}
-        android_ripple={{ color: theme.backgroundSelected }}
-        style={({ pressed }) => [
-          styles.container,
-          { backgroundColor: theme.backgroundElement },
-          pressed && Platform.OS === 'ios' && styles.pressed,
-        ]}
+        style={[styles.container, { backgroundColor: theme.backgroundElement }]}
       >
         <Image
           source={{ uri: recipe.image }}
@@ -69,10 +62,12 @@ export const RecipeCard = memo(function RecipeCard({
             </Typography>
           </View>
         </View>
-      </Pressable>
+      </AppPressable>
     </ShadowView>
   )
 })
+
+RecipeCard.displayName = 'RecipeCard'
 
 const styles = StyleSheet.create({
   shadowWrapper: {
@@ -83,9 +78,6 @@ const styles = StyleSheet.create({
     height: RECIPE_CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
-  },
-  pressed: {
-    opacity: 0.8,
   },
   image: {
     width: RECIPE_CARD_HEIGHT,

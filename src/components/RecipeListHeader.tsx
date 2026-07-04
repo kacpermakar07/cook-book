@@ -8,7 +8,7 @@ import { IconBook } from '@tabler/icons-react-native'
 
 const ICON_SLOT_SIZE = 20
 
-export function RecipeListHeader() {
+export const RecipeListHeader = () => {
   const theme = useTheme()
   const { t } = useTranslation()
   const insets = useSafeAreaInsets()

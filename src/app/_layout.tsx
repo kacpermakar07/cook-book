@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { AppProviders } from '@providers/AppProviders'
 
-export default function RootLayout() {
+const RootLayout = () => {
   const colorScheme = useColorScheme()
 
   return (
@@ -19,3 +19,5 @@ export default function RootLayout() {
     </AppProviders>
   )
 }
+
+export default RootLayout

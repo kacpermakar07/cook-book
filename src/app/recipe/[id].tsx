@@ -15,7 +15,7 @@ import {
 } from '@tabler/icons-react-native'
 import { getErrorMessage } from '@utils/getErrorMessage'
 
-export default function RecipeDetailsScreen() {
+const RecipeDetailsScreen = () => {
   const theme = useTheme()
   const { t } = useTranslation()
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -120,6 +120,8 @@ export default function RecipeDetailsScreen() {
     </ScrollView>
   )
 }
+
+export default RecipeDetailsScreen
 
 const styles = StyleSheet.create({
   container: {

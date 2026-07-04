@@ -2,9 +2,9 @@ import { StyleSheet, View, ViewProps } from 'react-native'
 
 import { ShadowColor } from '@constants/theme'
 
-export function ShadowView({ style, ...viewProps }: ViewProps) {
-  return <View style={[styles.shadow, style]} {...viewProps} />
-}
+export const ShadowView = ({ style, ...viewProps }: ViewProps) => (
+  <View style={[styles.shadow, style]} {...viewProps} />
+)
 
 const styles = StyleSheet.create({
   shadow: {
