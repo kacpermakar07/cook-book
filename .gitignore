@@ -34,8 +34,15 @@ yarn-error.*
 .env
 .env*.local
 
-# Claude Code local (personal) settings — settings.json itself stays tracked/shared
-.claude/settings.local.json
+# Claude Code settings — not shared via the repo
+.claude/
+
+# editor settings — not shared via the repo (IDE-agnostic)
+.vscode/
+
+# AI agent instruction files — not shared via the repo
+AGENTS.md
+CLAUDE.md
 
 # typescript
 *.tsbuildinfo
