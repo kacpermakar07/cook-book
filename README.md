@@ -13,7 +13,7 @@ Expo (SDK 57) + React Native app with two screens — recipe list and recipe det
 
 ## Requirements
 
-- Node.js >= 20
+- Node.js >= 22.13
 - Yarn (classic)
 
 ## Setup
@@ -32,5 +32,3 @@ Then scan the QR code with Expo Go, or press `a`/`i` for Android/iOS. No web tar
 - `yarn prettier:fix` — format
 - `yarn test` — pure-logic and API-layer tests (`node:test`, no Jest)
 - `yarn test:screens` — screen-level component tests (Jest + `jest-expo` + `@testing-library/react-native`)
-
-See `CLAUDE.md` for stack details, structure, and testing notes.
